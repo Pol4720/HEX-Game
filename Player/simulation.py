@@ -1,10 +1,12 @@
-from player import AIPlayer, HexBoard
+from player_optimus import UltraHexPlayer , HexBoard
 import time
 import os
 
 def print_board(board: HexBoard):
-    """Imprime el tablero en consola con colores para las jugadas."""
-    for row in board.board:
+    """Imprime el tablero en consola con forma de rombo y colores para las jugadas."""
+    size = len(board.board)
+    for i, row in enumerate(board.board):
+        print(" " * (size - i - 1), end="")  # Espacios iniciales para el desplazamiento
         for cell in row:
             if cell == 1:
                 print("\033[91m🔴\033[0m", end=" ")  # Rojo para el jugador 1
@@ -12,14 +14,14 @@ def print_board(board: HexBoard):
                 print("\033[94m🔵\033[0m", end=" ")  # Azul para el jugador 2
             else:
                 print("⬜", end=" ")  # Blanco para celdas vacías
-        print()
+        print()  # Nueva línea al final de cada fila
     print()
 
 def simulate_game(board_size: int, move_timeout: float):
     """Simula una partida de Hex entre dos instancias de AIPlayer."""
     board = HexBoard(board_size)
-    player1 = AIPlayer(player_id=1, timeout=move_timeout)
-    player2 = AIPlayer(player_id=2, timeout=move_timeout)
+    player1 = UltraHexPlayer(player_id=1, timeout=move_timeout)
+    player2 = UltraHexPlayer(player_id=2, timeout=move_timeout)
     players = [player1, player2]
     current_player_index = 0
 
