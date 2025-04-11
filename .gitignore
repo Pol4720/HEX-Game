@@ -1,2 +1,7 @@
 
 /HEX/src/__pycache__/
+/Player/__pycache__/
+/Player/game.py
+/Player/MCplayer.py
+/Player/player_optimus.py
+/Player/player_best.py

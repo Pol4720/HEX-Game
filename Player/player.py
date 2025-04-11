@@ -81,7 +81,7 @@ class HexBoard:
         return False
 
 class AIPlayer:
-    def __init__(self, player_id: int, max_depth: int = 3, timeout: float = 5.0):
+    def __init__(self, player_id: int, max_depth: int = 10, timeout: float = 10):
         self.player_id = player_id
         self.opponent_id = 3 - player_id  # Calcula el ID del oponente (1->2 o 2->1)
         self.max_depth = max_depth
