@@ -1,8 +1,7 @@
 import time
 import math
-import random
 import heapq
-from player import  HexBoard
+from hex_board import  HexBoard
 from typing import  List
 
 class EnhancedMCTSNode:
@@ -101,22 +100,35 @@ class EnhancedMCTSNode:
     def _get_neighbors(self, r: int, c: int) -> List[tuple]:
         # Implementación de adyacencias even-r
         neighbors = []
-        if r % 2 == 0:
-            dirs = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, 1), (1, 1)]
-        else:
-            dirs = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, -1)]
+        
+        dirs = [(0, -1),   # Izquierda
+                (0, 1),    # Derecha
+                (-1, 0),   # Arriba
+                (1, 0),    # Abajo
+                (-1, 1),   # Arriba derecha
+                (1, -1)    ]
+      
+        
         for dr, dc in dirs:
             nr, nc = r + dr, c + dc
             if 0 <= nr < self.board.size and 0 <= nc < self.board.size:
                 neighbors.append((nr, nc))
         return neighbors
 
-class AdvancedHexPlayer():
+class Player:
     def __init__(self, player_id: int):
-        self.player_id = player_id
+        self.player_id = player_id   # Tu identificador (1 o 2)
+
+    def play(self, board: HexBoard) -> tuple:
+        raise NotImplementedError("¡Implementa este método!")
+
+
+class AdvancedHexPlayer(Player):
+    def __init__(self, player_id: int):
+        super().__init__(player_id)
         self.time_limit = 10
 
-    def play(self, board: HexBoard, time_limit: int = 10) -> tuple:
+    def play(self, board: HexBoard, time_limit: int = 9) -> tuple:
         self.time_limit = time_limit
         start_time = time.time()
         root = EnhancedMCTSNode(board, player_id=self.player_id)
@@ -151,8 +163,6 @@ class AdvancedHexPlayer():
             if temp_board.check_connection(current_player):
                 return 1.0 if current_player == self.player_id else 0.0
             moves = temp_board.get_possible_moves()
-            if not moves:
-                return 0.5
             # Elegir mejor movimiento según heurística
             move_scores = [(node._heuristic_score(move), move) for move in moves]
             best_move = max(move_scores, key=lambda x: x[0])[1]
@@ -380,3 +390,5 @@ class HeuristicScore:
                         score -= 0.3 if i == 0 else 0.3
         
         return score / size
+
+#sl23
